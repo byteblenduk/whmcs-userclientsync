@@ -8,7 +8,7 @@ if (!defined("WHMCS")) {
 }
 
 
-function addonmodule_config()
+function userclientsync_config()
 {
     return [
         // Display name for your module
@@ -20,7 +20,7 @@ function addonmodule_config()
         // Default language
         'language' => 'english',
         // Version number
-        'version' => '1.0',
+        'version' => '1.1',
     ];
 }
 ?>
