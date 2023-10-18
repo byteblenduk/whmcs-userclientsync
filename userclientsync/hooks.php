@@ -1,5 +1,16 @@
 <?php
-add_hook('userEdit', 1, function($vars) {
+function syncUser2Client($vars)
+{
+    // Log the start of the hook
+    logModuleCall(
+        'Client Sync Module', // Replace with your module name
+        'UserEdit Synchronization Start',
+        $vars,
+        '',
+        '',
+        ''
+    );
+
     // Get the old user data
     $oldData = $vars['olddata'];
 
@@ -18,44 +29,83 @@ add_hook('userEdit', 1, function($vars) {
             'search' => $oldEmail,
         );
 
+        // Log the search request
+        logModuleCall(
+            'Client Sync Module',
+            'UserEdit Synchronization Search',
+            $postData,
+            '',
+            '',
+            ''
+        );
+
         // Perform the local API call
         $apiResponse = localAPI('GetClients', $postData);
 
+        // Log the API response
+        logModuleCall(
+            'Client Sync Module',
+            'UserEdit Synchronization API Response',
+            $apiResponse,
+            '',
+            '',
+            ''
+        );
+
         // Check if the API call was successful
         if ($apiResponse['result'] === 'success' && !empty($apiResponse['clients'])) {
-            $clientID = $apiResponse['clients'][0]['id'];
+            $clientID = $apiResponse['clients']['client'][0]['id'];
 
             // Prepare data for updating the client
             $updateData = array(
-                'action' => 'UpdateClient',
                 'clientid' => $clientID, // The client ID obtained earlier
                 'firstname' => $vars['firstname'],
                 'lastname' => $vars['lastname'],
                 'email' => $vars['email'],
             );
 
+            // Log the client update request
+            logModuleCall(
+                'Client Sync Module',
+                'UserEdit Synchronization Client Update Request',
+                $updateData,
+                '',
+                '',
+                ''
+            );
+
             // Perform the API call to update the client
             $updateResponse = localAPI('UpdateClient', $updateData);
+
+            // Log the client update response
+            logModuleCall(
+                'Client Sync Module',
+                'UserEdit Synchronization Client Update Response',
+                $updateResponse,
+                '',
+                '',
+                ''
+            );
 
             // Check if the update was successful
             if ($updateResponse['result'] === 'success') {
                 // Log the successful synchronization
                 logModuleCall(
-                    'Client Sync Module', // Replace with your module name
-                    'UserEdit Synchronization',
-                    $vars,
-                    'Client Update Successful',
+                    'Client Sync Module',
+                    'UserEdit Synchronization Client Update Successful',
+                    '',
+                    '',
                     '',
                     ''
                 );
             } else {
                 // Handle the error and log it
                 logModuleCall(
-                    'Client Sync Module', // Replace with your module name
-                    'UserEdit Synchronization',
-                    $vars,
-                    'Client Update Failed',
+                    'Client Sync Module',
+                    'UserEdit Synchronization Client Update Failed',
                     $updateResponse,
+                    '',
+                    '',
                     ''
                 );
             }
@@ -64,9 +114,20 @@ add_hook('userEdit', 1, function($vars) {
         // No changes detected, end the hook
         return;
     }
-});
+}
 
-add_hook('clientEdit', 1, function($vars) {
+function syncClient2User($vars)
+{
+    // Log the start of the hook
+    logModuleCall(
+        'User Sync Module', // Replace with your module name
+        'ClientEdit Synchronization Start',
+        $vars,
+        '',
+        '',
+        ''
+    );
+
     // Get the old client data
     $oldData = $vars['olddata'];
 
@@ -85,8 +146,28 @@ add_hook('clientEdit', 1, function($vars) {
             'search' => $oldEmail,
         );
 
+        // Log the search request
+        logModuleCall(
+            'User Sync Module',
+            'ClientEdit Synchronization Search',
+            $postData,
+            '',
+            '',
+            ''
+        );
+
         // Perform the local API call
         $apiResponse = localAPI('GetUsers', $postData);
+
+        // Log the API response
+        logModuleCall(
+            'User Sync Module',
+            'ClientEdit Synchronization API Response',
+            $apiResponse,
+            '',
+            '',
+            ''
+        );
 
         // Check if the API call was successful
         if ($apiResponse['result'] === 'success' && !empty($apiResponse['users'])) {
@@ -94,35 +175,54 @@ add_hook('clientEdit', 1, function($vars) {
 
             // Prepare data for updating the user
             $updateData = array(
-                'action' => 'updateuser',
-                'userid' => $userID, // The user ID obtained earlier
+                'user_id' => $userID, // The user ID obtained earlier
                 'firstname' => $vars['firstname'],
                 'lastname' => $vars['lastname'],
                 'email' => $vars['email'],
             );
 
+            // Log the user update request
+            logModuleCall(
+                'User Sync Module',
+                'ClientEdit Synchronization User Update Request',
+                $updateData,
+                '',
+                '',
+                ''
+            );
+
             // Perform the API call to update the user
-            $updateResponse = localAPI('updateuser', $updateData);
+            $updateResponse = localAPI('UpdateUser', $updateData);
+
+            // Log the user update response
+            logModuleCall(
+                'User Sync Module',
+                'ClientEdit Synchronization User Update Response',
+                $updateResponse,
+                '',
+                '',
+                ''
+            );
 
             // Check if the update was successful
             if ($updateResponse['result'] === 'success') {
                 // Log the successful synchronization
                 logModuleCall(
-                    'User Sync Module', // Replace with your module name
-                    'ClientEdit Synchronization',
-                    $vars,
-                    'User Update Successful',
+                    'User Sync Module',
+                    'ClientEdit Synchronization User Update Successful',
+                    '',
+                    '',
                     '',
                     ''
                 );
             } else {
                 // Handle the error and log it
                 logModuleCall(
-                    'User Sync Module', // Replace with your module name
-                    'ClientEdit Synchronization',
-                    $vars,
-                    'User Update Failed',
+                    'User Sync Module',
+                    'ClientEdit Synchronization User Update Failed',
                     $updateResponse,
+                    '',
+                    '',
                     ''
                 );
             }
@@ -131,5 +231,8 @@ add_hook('clientEdit', 1, function($vars) {
         // No changes detected, end the hook
         return;
     }
-});
+}
+
+add_hook('UserEdit', 1, 'syncUser2Client');
+add_hook('ClientEdit', 1, 'syncClient2User');
 ?>
