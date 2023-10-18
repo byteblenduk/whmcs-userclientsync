@@ -24,7 +24,7 @@ The User/Client Sync module operates automatically in the background. It hooks i
 - Description: This module provides automatic two-way syncing between client and user details.
 - Author: Twizel
 - Language: English
-- Version: 1.0
+- Version: 1.1
 
 ## Support
 
