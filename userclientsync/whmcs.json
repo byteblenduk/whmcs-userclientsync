@@ -1,0 +1,24 @@
+{
+  "schema": "1.0",
+  "type": "whmcs-addons",
+  "name": "userclientsync",
+  "category": "utilities",
+  "description": {
+    "name": "User/Client Sync",
+    "tagline": "Automatic 2 way syncing between client and user details.",
+    "long": "A module that syncs data between users and clients, using hooks this sends a change in email, first name or last name within either the client or user accounts and then syncs it to the other, keeping this information the same across this site."
+  },
+  "logo": {
+    "filename": "logo.png"
+  },
+  "support": {
+    "learn_more": "https:\/\/www.byteblend.co.uk\/client-user-sync-whmcs-module"
+    "docs_url": "https:\/\/github.com\/byteblenduk\/whmcs-userclientsync\/wiki"
+  },
+  "authors": [
+    {
+      "name": "ByteBlend",
+      "homepage": "https:\/\/byteblend.co.uk\/"
+    }
+  ]
+}
