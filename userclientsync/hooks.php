@@ -2,6 +2,7 @@
 function syncUser2Client($vars) {
     $module = "Sync User to Client";
     $oldData = $vars['olddata'];
+    $userID = $vars['user_id'];
 
     // Consolidated condition checks
     if (
@@ -32,6 +33,7 @@ function syncUser2Client($vars) {
 
         // Combined log call for either "Client Update Success" or "Client Update Failed"
         logModuleCall($module, $logMessage, $updateData, $updateResponse, '', '');
+        logActivity($logMessage, $userID);
     }
 }
 
