@@ -6,15 +6,10 @@ if (!defined("WHMCS")) {
 function userclientsync_config()
 {
     return [
-        // Display name for your module
         'name' => 'User/Client Sync',
-        // Description displayed within the admin interface
         'description' => 'Automatic 2 way syncing between client and user details',
-        // Module author name
         'author' => 'ByteBlend',
-        // Default language
         'language' => 'english',
-        // Version number
         'version' => '1.2',
     ];
 }
