@@ -24,7 +24,7 @@ function syncUser2Client($vars) {
         logActivity($logMessage, $userID);
     }
 }
-function syncUser2Client($vars) {
+function syncClient2User($vars) {
     $module = "Sync Client to User";
     $oldData = $vars['olddata'];
     if (
@@ -41,7 +41,7 @@ function syncUser2Client($vars) {
     logModuleCall($module, "User ID Search", ['action' => 'GetUsers', 'search' => $oldEmail], $apiResponse, '', '');
     if ($apiResponse['result'] === 'success' && !empty($apiResponse['users'])) {
         $userID = $apiResponse['users'][0]['id'];
-        $updateData = ['userid' => $userID, 'firstname' => $vars['firstname'], 'lastname' => $vars['lastname'], 'email' => $vars['email']];
+        $updateData = ['user_id' => $userID, 'firstname' => $vars['firstname'], 'lastname' => $vars['lastname'], 'email' => $vars['email']];
         $updateResponse = localAPI('UpdateUser', $updateData);
         $logMessage = $updateResponse['result'] === 'success' ? "User Update Success" : "User Update Failed";
         logModuleCall($module, $logMessage, $updateData, $updateResponse, '', '');
