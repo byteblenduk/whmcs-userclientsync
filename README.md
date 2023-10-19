@@ -42,5 +42,5 @@ This module is released under the GNU GENERAL PUBLIC license. You can find the f
 
 ## Credits
 
-The User/Client Sync module was created by Twizel.
+The User/Client Sync module was created by Twizel on behalf of ByteBlend.
 
