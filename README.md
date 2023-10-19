@@ -7,8 +7,8 @@ The User/Client Sync module is designed to automate a two-way synchronization of
 
 ## Installation
 
-1. Download the User/Client Sync module from the source.
-2. Upload the module to your WHMCS installation in the modules/addons directory.
+1. Download the User/Client Sync module from the releases.
+2. Upload and unpack the module to your WHMCS installation in the modules/addons directory.
 3. Log in to your WHMCS admin area.
 4. Navigate to Setup > Addon Modules.
 5. Find "User/Client Sync" in the list of available addon modules and click the "Activate" button.
@@ -22,9 +22,9 @@ The User/Client Sync module operates automatically in the background. It hooks i
 
 - Module Name: User/Client Sync
 - Description: This module provides automatic two-way syncing between client and user details.
-- Author: Twizel
+- Author: ByteBlend
 - Language: English
-- Version: 1.1
+- Version: 1.2
 
 ## Support
 
