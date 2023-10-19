@@ -1,120 +1,40 @@
 <?php
-function syncUser2Client($vars)
-{
-    // Log the start of the hook
-    logModuleCall(
-        'Client Sync Module', // Replace with your module name
-        'UserEdit Synchronization Start',
-        $vars,
-        '',
-        '',
-        ''
-    );
-
-    // Get the old user data
+function syncUser2Client($vars) {
+    $module = "Sync User to Client";
     $oldData = $vars['olddata'];
 
-    // Compare email, firstname, and lastname for changes
+    // Consolidated condition checks
     if (
-        $oldData['email'] !== $vars['email'] ||
-        $oldData['firstname'] !== $vars['firstname'] ||
-        $oldData['lastname'] !== $vars['lastname']
+        $oldData['email'] === $vars['email'] &&
+        $oldData['firstname'] === $vars['firstname'] &&
+        $oldData['lastname'] === $vars['lastname']
     ) {
-        // Changes detected, proceed with synchronization
-
-        // Use the old email to search for client ID
-        $oldEmail = $oldData['email'];
-        $postData = array(
-            'action' => 'GetClients',
-            'search' => $oldEmail,
-        );
-
-        // Log the search request
-        logModuleCall(
-            'Client Sync Module',
-            'UserEdit Synchronization Search',
-            $postData,
-            '',
-            '',
-            ''
-        );
-
-        // Perform the local API call
-        $apiResponse = localAPI('GetClients', $postData);
-
-        // Log the API response
-        logModuleCall(
-            'Client Sync Module',
-            'UserEdit Synchronization API Response',
-            $apiResponse,
-            '',
-            '',
-            ''
-        );
-
-        // Check if the API call was successful
-        if ($apiResponse['result'] === 'success' && !empty($apiResponse['clients'])) {
-            $clientID = $apiResponse['clients']['client'][0]['id'];
-
-            // Prepare data for updating the client
-            $updateData = array(
-                'clientid' => $clientID, // The client ID obtained earlier
-                'firstname' => $vars['firstname'],
-                'lastname' => $vars['lastname'],
-                'email' => $vars['email'],
-            );
-
-            // Log the client update request
-            logModuleCall(
-                'Client Sync Module',
-                'UserEdit Synchronization Client Update Request',
-                $updateData,
-                '',
-                '',
-                ''
-            );
-
-            // Perform the API call to update the client
-            $updateResponse = localAPI('UpdateClient', $updateData);
-
-            // Log the client update response
-            logModuleCall(
-                'Client Sync Module',
-                'UserEdit Synchronization Client Update Response',
-                $updateResponse,
-                '',
-                '',
-                ''
-            );
-
-            // Check if the update was successful
-            if ($updateResponse['result'] === 'success') {
-                // Log the successful synchronization
-                logModuleCall(
-                    'Client Sync Module',
-                    'UserEdit Synchronization Client Update Successful',
-                    '',
-                    '',
-                    '',
-                    ''
-                );
-            } else {
-                // Handle the error and log it
-                logModuleCall(
-                    'Client Sync Module',
-                    'UserEdit Synchronization Client Update Failed',
-                    $updateResponse,
-                    '',
-                    '',
-                    ''
-                );
-            }
-        }
-    } else {
-        // No changes detected, end the hook
+        // Combined log call for "Sync Ended"
+        logModuleCall($module, "Sync Ended", "No Changes to Sync", '', '', '');
         return;
     }
+
+    // Combined log call for "Sync Started"
+    logModuleCall($module, "Sync Started", "A change to the User has been detected, Starting Sync", $oldData['email'], '', '');
+
+    $oldEmail = $oldData['email'];
+    $apiResponse = localAPI('GetClients', ['action' => 'GetClients', 'search' => $oldEmail]);
+
+    // Combined log call for "Client ID Search"
+    logModuleCall($module, "Client ID Search", ['action' => 'GetClients', 'search' => $oldEmail], $apiResponse, '', '');
+
+    if ($apiResponse['result'] === 'success' && !empty($apiResponse['clients'])) {
+        $clientID = $apiResponse['clients']['client'][0]['id'];
+        $updateData = ['clientid' => $clientID, 'firstname' => $vars['firstname'], 'lastname' => $vars['lastname'], 'email' => $vars['email']];
+        $updateResponse = localAPI('UpdateClient', $updateData);
+
+        $logMessage = $updateResponse['result'] === 'success' ? "Client Update Success" : "Client Update Failed";
+
+        // Combined log call for either "Client Update Success" or "Client Update Failed"
+        logModuleCall($module, $logMessage, $updateData, $updateResponse, '', '');
+    }
 }
+
 
 function syncClient2User($vars)
 {
