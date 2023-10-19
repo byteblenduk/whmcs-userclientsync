@@ -36,7 +36,9 @@ This module is released under the GNU GENERAL PUBLIC license. You can find the f
 
 ## Changelog
 
-- **1.0** - Initial release 18/09/2023
+- **1.2** - Improved logging & reduced code while maintaining functionality
+- **1.1** - Updated and fixed errors
+- **1.0** - Initial release
 
 ## Credits
 
