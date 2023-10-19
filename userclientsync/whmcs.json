@@ -2,17 +2,18 @@
   "schema": "1.0",
   "type": "whmcs-addons",
   "name": "userclientsync",
+  "license": "proprietary",
   "category": "utilities",
   "description": {
     "name": "User/Client Sync",
     "tagline": "Automatic 2 way syncing between client and user details.",
-    "long": "A module that syncs data between users and clients, using hooks this sends a change in email, first name or last name within either the client or user accounts and then syncs it to the other, keeping this information the same across this site."
+    "long": "A module that syncs data between users and clients using hooks and localapi requests.\n\n**Data Synced**\n\n* Email Address\n* First Name\n- Last Name\n\n**Hooks:**\n\n* ClientEdit - Triggered when a change is made to the clients deteails\n* UserEdit - Triggered when a change is made to the users deteails\n\n**Local API Requests:**\n\n* GetClients - Used to search the client ID\n* UpdateClient - Sends new data to update the User account using the User ID\n* GetUsers - Used to search the user ID\n* UpdateUser - Sends new data to update the User account using the User ID\n\n**Workflows:**\n\n* ClientEdit -> GetUsers -> UpdateUser\n* UserEdit -> GetClients -> UpdateClient\n\n**Logging**\n\n* Full logging in module log\n* Additional admin Success or Error message, including user ID"
   },
   "logo": {
     "filename": "logo.png"
   },
   "support": {
-    "learn_more": "https:\/\/www.byteblend.co.uk\/client-user-sync-whmcs-module"
+    "learn_more": "https:\/\/www.byteblend.co.uk\/client-user-sync-whmcs-module",
     "docs_url": "https:\/\/github.com\/byteblenduk\/whmcs-userclientsync\/wiki"
   },
   "authors": [
