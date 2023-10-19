@@ -3,40 +3,27 @@ function syncUser2Client($vars) {
     $module = "Sync User to Client";
     $oldData = $vars['olddata'];
     $userID = $vars['user_id'];
-
-    // Consolidated condition checks
     if (
         $oldData['email'] === $vars['email'] &&
         $oldData['firstname'] === $vars['firstname'] &&
         $oldData['lastname'] === $vars['lastname']
     ) {
-        // Combined log call for "Sync Ended"
         logModuleCall($module, "Sync Ended", "No Changes to Sync", '', '', '');
         return;
     }
-
-    // Combined log call for "Sync Started"
     logModuleCall($module, "Sync Started", "A change to the User has been detected, Starting Sync", $oldData['email'], '', '');
-
     $oldEmail = $oldData['email'];
     $apiResponse = localAPI('GetClients', ['action' => 'GetClients', 'search' => $oldEmail]);
-
-    // Combined log call for "Client ID Search"
     logModuleCall($module, "Client ID Search", ['action' => 'GetClients', 'search' => $oldEmail], $apiResponse, '', '');
-
     if ($apiResponse['result'] === 'success' && !empty($apiResponse['clients'])) {
         $clientID = $apiResponse['clients']['client'][0]['id'];
         $updateData = ['clientid' => $clientID, 'firstname' => $vars['firstname'], 'lastname' => $vars['lastname'], 'email' => $vars['email']];
         $updateResponse = localAPI('UpdateClient', $updateData);
-
         $logMessage = $updateResponse['result'] === 'success' ? "Client Update Success" : "Client Update Failed";
-
-        // Combined log call for either "Client Update Success" or "Client Update Failed"
         logModuleCall($module, $logMessage, $updateData, $updateResponse, '', '');
         logActivity($logMessage, $userID);
     }
 }
-
 function syncUser2Client($vars) {
     $module = "Sync Client to User";
     $oldData = $vars['olddata'];
@@ -61,7 +48,6 @@ function syncUser2Client($vars) {
         logActivity($logMessage, $userID);
     }
 }
-
 add_hook('UserEdit', 1, 'syncUser2Client');
 add_hook('ClientEdit', 1, 'syncClient2User');
 ?>
